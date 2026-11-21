@@ -8,8 +8,11 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./credit_assistant.db")
 
 # Standardize postgres protocol if provided as postgres:// (common on Heroku/Render)
+# Standardize PostgreSQL connection URL
 if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+elif DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 
 # Configure engine arguments based on dialect
 connect_args = {}
